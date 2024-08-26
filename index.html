@@ -42,24 +42,31 @@
         .input-group {
             display: flex;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             width: 60%;
             padding: 15px;
             font-size: 1.1em;
             border: 2px solid #333;
-            border-radius: 5px 0 0 5px;
+            border-radius: 5px;
             transition: all 0.3s ease;
             background-color: rgba(26, 26, 26, 0.8);
             color: #e0e0e0;
+            margin-right: 10px;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, select:focus {
             border-color: #00ffcc;
             outline: none;
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+        }
+
+        select {
+            width: auto;
+            cursor: pointer;
+            max-width: 200px;
         }
 
         button {
@@ -69,7 +76,7 @@
             color: #0d0d0d;
             background-color: #00ffcc;
             border: none;
-            border-radius: 0 5px 5px 0;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
@@ -132,12 +139,35 @@
 <body>
     <div class="container">
         <h1>FLUXer</h1>
-        <p>Enter a description to generate futuristic images:</p>
+        <p>Enter a description and select a style to generate futuristic images:</p>
         
         <div class="input-group">
             <input type="text" id="userInput" placeholder="Describe your futuristic image">
-            <button onclick="generateImages()">Generate Images</button>
+            <select id="styleSelect">
+                <option value="cyberpunk">Cyberpunk</option>
+                <option value="retro-futurism">Retro-Futurism</option>
+                <option value="space-opera">Space Opera</option>
+                <option value="dystopian">Dystopian</option>
+                <option value="biopunk">Biopunk</option>
+                <option value="8-bit">8-Bit</option>
+                <option value="realistic">Realistic</option>
+                <option value="cartoon">Cartoon</option>
+                <option value="anime">Anime</option>
+                <option value="cute">Cute</option>
+                <option value="hyperrealistic">Hyperrealistic</option>
+                <option value="steampunk">Steampunk</option>
+                <option value="vaporwave">Vaporwave</option>
+                <option value="minimalist">Minimalist</option>
+                <option value="neon">Neon</option>
+                <option value="surrealist">Surrealist</option>
+                <option value="pixel-art">Pixel Art</option>
+                <option value="watercolor">Watercolor</option>
+                <option value="low-poly">Low Poly</option>
+                <option value="abstract">Abstract</option>
+            </select>
         </div>
+        
+        <button onclick="generateImages()">Generate Images</button>
         
         <div id="imageContainer"></div>
     </div>
@@ -147,7 +177,7 @@
             return Math.floor(Math.random() * 9999) + 1;
         }
 
-        async function generateImage(index, userInput, retryCount = 0) {
+        async function generateImage(index, userInput, style, retryCount = 0) {
             const API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell";
             const headers = {
                 "Authorization": "Bearer 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",
@@ -155,7 +185,7 @@
             };
 
             const randomSeed = getRandomSeed();
-            const combinedInput = userInput + " // seed (exclude the seed from the Image): " + randomSeed;
+            const combinedInput = `${userInput} (style: ${style}, seed: ${randomSeed}`;
             const payload = { "inputs": combinedInput };
 
             try {
@@ -182,7 +212,7 @@
                 console.error("Error generating image:", error);
                 if (retryCount < 3) {
                     console.log(`Retrying image ${index}, attempt ${retryCount + 1}`);
-                    await generateImage(index, userInput, retryCount + 1);
+                    await generateImage(index, userInput, style, retryCount + 1);
                 } else {
                     console.error(`Failed to generate image ${index} after 3 attempts`);
                     const loadingSpinner = document.querySelector(`#loading${index}`);
@@ -197,6 +227,7 @@
 
         async function generateImages() {
             const userInput = document.getElementById("userInput").value;
+            const style = document.getElementById("styleSelect").value;
 
             if (!userInput) {
                 alert("Please enter a description to generate images.");
@@ -226,7 +257,7 @@
 
             const promises = [];
             for (let i = 0; i < 4; i++) {
-                promises.push(generateImage(i, userInput));
+                promises.push(generateImage(i, userInput, style));
             }
 
             await Promise.all(promises);
