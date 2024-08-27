@@ -90,9 +90,12 @@
 
         #imageContainer {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(2, 1fr); /* Two columns */
+            grid-template-rows: repeat(2, 1fr); /* Two rows */
+            gap: 30px; /* Space between images */
             margin-top: 40px;
+            justify-items: center; /* Center images horizontally */
+            align-items: center; /* Center images vertically */
         }
 
         .image-wrapper {
@@ -164,7 +167,22 @@
                 <option value="watercolor">Watercolor</option>
                 <option value="low-poly">Low Poly</option>
                 <option value="abstract">Abstract</option>
-            </select>
+                <!-- New fun and quirky styles -->
+                <option value="nature">Nature</option>
+                <option value="puppy">Puppy</option>
+                <option value="bubbly">Bubbly</option>
+                <option value="brickstyle">Brick Style</option>
+                <option value="dollalike">Dollalike</option>
+                <option value="soap">Soap</option>
+                <option value="paper">Paper</option>
+                <option value="claymation">Claymation</option>
+                <option value="chalkboard">Chalkboard</option>
+                <option value="sticker">Sticker</option>
+                <option value="crayon">Crayon</option>
+                <option value="comic-strip">Comic Strip</option>
+                <option value="silly-cartoon">Silly Cartoon</option>
+                <option value="candyland">Candyland</option>
+            </select>            
         </div>
         
         <button onclick="generateImages()">Generate Images</button>
@@ -173,6 +191,14 @@
     </div>
 
     <script>
+         const accessTokens = [
+            "Bearer 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", 
+            "Bearer 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"
+            // Add more tokens as needed
+        ];
+        
+        let tokenIndex = 0;
+
         function getRandomSeed() {
             return Math.floor(Math.random() * 9999) + 1;
         }
@@ -180,12 +206,12 @@
         async function generateImage(index, userInput, style, retryCount = 0) {
             const API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell";
             const headers = {
-                "Authorization": "Bearer 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",
+                "Authorization": accessTokens[tokenIndex],
                 "Content-Type": "application/json"
             };
 
             const randomSeed = getRandomSeed();
-            const combinedInput = `${userInput} (style: ${style}, seed: ${randomSeed}`;
+            const combinedInput = `${userInput} (style: ${style}, seed: ${randomSeed})`;
             const payload = { "inputs": combinedInput };
 
             try {
@@ -223,6 +249,9 @@
                     document.querySelector(`#wrapper${index}`).appendChild(errorMessage);
                 }
             }
+
+            // Move to the next token in the list, wrap around if necessary
+            tokenIndex = (tokenIndex + 1) % accessTokens.length;
         }
 
         async function generateImages() {
