@@ -258,9 +258,9 @@
 
             if (style === "custom") {
                 const customStyle = document.getElementById("customStyleInput").value;
-                combinedInput = `prompt: ${userInput} (style: ${customStyle}, seed: ${randomSeed})`;
+                combinedInput = `"prompt": ${userInput} (style: ${customStyle}, "seed": ${randomSeed})`;
             } else {
-                combinedInput = `prompt: ${userInput} (style: ${style}), seed: ${randomSeed}`;
+                combinedInput = `"prompt": ${userInput} (style: ${style}), "seed": ${randomSeed}`;
             }
 
             const payload = { "inputs": combinedInput };
