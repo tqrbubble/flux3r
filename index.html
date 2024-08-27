@@ -8,146 +8,174 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="https://raw.githubusercontent.com/tqrbubble/flux3r/main/favicon.ico" type="image/x-icon">
     <style>
-        body {
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-            color: #e0e0e0;
-            text-align: center;
-            padding: 40px 20px;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
+    body {
+        font-family: 'Orbitron', sans-serif;
+        background-color: #000000;
+        color: #e0e0e0;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+    }
+    
+    h1 {
+        font-size: 3em;
+        color: #00ffcc;
+        text-shadow: 0 0 10px rgba(0, 255, 204, 0.7);
+        margin-bottom: 20px;
+    }
+    
+    p {
+        font-size: 1.2em;
+        color: #b3b3b3;
+        margin-bottom: 30px;
+    }
+    
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    input[type="text"], select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        font-size: 1em;
+        font-family: 'Orbitron', sans-serif;
+        color: #00ffcc;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 2px solid #00ffcc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    input[type="text"]:focus, select:focus {
+        outline: none;
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    }
+    
+    .select-wrapper {
+        position: relative;
+        width: 100%;
+    }
+    
+    select {
+        appearance: none;
+        padding-right: 30px;
+        cursor: pointer;
+    }
+    
+    .select-wrapper::after {
+        content: '▼';
+        font-size: 0.8em;
+        color: #00ffcc;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+    
+    #customStyleInput {
+        display: none;
+    }
+    
+    button {
+        padding: 12px 24px;
+        font-size: 1.1em;
+        font-weight: bold;
+        font-family: 'Orbitron', sans-serif;
+        color: #000000;
+        background-color: #00ffcc;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    }
+    
+    button:hover {
+        background-color: #00e6b8;
+        transform: translateY(-2px);
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+    }
+    
+    #imageContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+    
+    .image-wrapper {
+        position: relative;
+        aspect-ratio: 1;
+        background-color: rgba(0, 255, 204, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+    }
+    
+    .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 4px solid #333;
+        border-top: 4px solid #00ffcc;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    .generated-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+    }
+    
+    @media (max-width: 600px) {
         h1 {
-            color: #00ffcc;
-            font-size: 3.5em;
-            margin-bottom: 30px;
-            text-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
-            letter-spacing: 3px;
+            font-size: 2.5em;
         }
-
+    
         p {
-            font-size: 1.4em;
-            margin-bottom: 30px;
-            color: #b3b3b3;
+            font-size: 1em;
         }
-
-        .input-group {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+    
+        input[type="text"], select, button {
+            font-size: 0.9em;
         }
-
-        input[type="text"], select {
-            width: 60%;
-            padding: 15px;
-            font-size: 1.1em;
-            border: 2px solid #333;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            background-color: rgba(26, 26, 26, 0.8);
-            color: #e0e0e0;
-            margin-right: 10px;
-        }
-
-        input[type="text"]:focus, select:focus {
-            border-color: #00ffcc;
-            outline: none;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
-        }
-
-        select {
-            width: auto;
-            cursor: pointer;
-            max-width: 200px;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #0d0d0d;
-            background-color: #00ffcc;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
-        }
-
-        button:hover {
-            background-color: #00e6b3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.6);
-        }
-
-        #imageContainer {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Two columns */
-            grid-template-rows: repeat(2, 1fr); /* Two rows */
-            gap: 30px; /* Space between images */
-            margin-top: 40px;
-            justify-items: center; /* Center images horizontally */
-            align-items: center; /* Center images vertically */
-        }
-
-        .image-wrapper {
-            position: relative;
-            aspect-ratio: 1;
-            background-color: rgba(26, 26, 26, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .image-wrapper:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 255, 204, 0.4);
-        }
-
-        .loading {
-            border: 4px solid #333;
-            border-top: 4px solid #00ffcc;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .generated-image {
-            width: 100%;
-            height: 100%;
-            display: none;
-            border-radius: 15px;
-            object-fit: cover;
-        }
+    }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>FLUXer</h1>
         <p>Enter a description and select a style to generate futuristic images:</p>
-        
+
         <div class="input-group">
             <input type="text" id="userInput" placeholder="Describe your futuristic image">
-            <select id="styleSelect">
+            <select id="styleSelect" onchange="toggleCustomInput()">
                 <option value="cyberpunk">Cyberpunk</option>
                 <option value="retro-futurism">Retro-Futurism</option>
                 <option value="space-opera">Space Opera</option>
@@ -168,7 +196,6 @@
                 <option value="watercolor">Watercolor</option>
                 <option value="low-poly">Low Poly</option>
                 <option value="abstract">Abstract</option>
-                <!-- New fun and quirky styles -->
                 <option value="nature">Nature</option>
                 <option value="puppy">Puppy</option>
                 <option value="bubbly">Bubbly</option>
@@ -183,21 +210,37 @@
                 <option value="comic-strip">Comic Strip</option>
                 <option value="silly-cartoon">Silly Cartoon</option>
                 <option value="candyland">Candyland</option>
-            </select>            
-        </div>
-        
+                <option value="vintage">Vintage</option>
+                <option value="graffiti">Graffiti</option>
+                <option value="pop-art">Pop Art</option>
+                <option value="mosaic">Mosaic</option>
+                <option value="origami">Origami</option>
+                <option value="glitch">Glitch</option>
+                <option value="art-nouveau">Art Nouveau</option>
+                <option value="impressionist">Impressionist</option>
+                <option value="cubist">Cubist</option>
+                <option value="gothic">Gothic</option>
+                <option value="custom">Custom</option>
+            </select>
+        <input type="text" id="customStyleInput" placeholder="Enter custom style">
+        </div><
+
         <button onclick="generateImages()">Generate Images</button>
-        
+
         <div id="imageContainer"></div>
     </div>
 
     <script>
-         const accessTokens = [
-            "Bearer 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"
-            // Add more tokens as needed
-        ];
-        
-        let tokenIndex = 0;
+        function toggleCustomInput() {
+            const styleSelect = document.getElementById("styleSelect");
+            const customStyleInput = document.getElementById("customStyleInput");
+            
+            if (styleSelect.value === "custom") {
+                customStyleInput.style.display = "block";
+            } else {
+                customStyleInput.style.display = "none";
+            }
+        }
 
         function getRandomSeed() {
             return Math.floor(Math.random() * 9999) + 1;
@@ -206,12 +249,20 @@
         async function generateImage(index, userInput, style, retryCount = 0) {
             const API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell";
             const headers = {
-                "Authorization": accessTokens[tokenIndex],
+                "Authorization": "Bearer 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",
                 "Content-Type": "application/json"
             };
 
             const randomSeed = getRandomSeed();
-            const combinedInput = `${userInput} (style: ${style}, seed: ${randomSeed})`;
+            let combinedInput;
+
+            if (style === "custom") {
+                const customStyle = document.getElementById("customStyleInput").value;
+                combinedInput = `${userInput} (style: ${customStyle}, seed: ${randomSeed})`;
+            } else {
+                combinedInput = `${userInput} (style: ${style}, seed: ${randomSeed})`;
+            }
+
             const payload = { "inputs": combinedInput };
 
             try {
@@ -230,7 +281,7 @@
 
                 const loadingSpinner = document.querySelector(`#loading${index}`);
                 const imageElement = document.querySelector(`#generatedImage${index}`);
-                
+
                 loadingSpinner.style.display = 'none';
                 imageElement.src = imageUrl;
                 imageElement.style.display = 'block';
@@ -249,17 +300,20 @@
                     document.querySelector(`#wrapper${index}`).appendChild(errorMessage);
                 }
             }
-
-            // Move to the next token in the list, wrap around if necessary
-            tokenIndex = (tokenIndex + 1) % accessTokens.length;
         }
 
         async function generateImages() {
             const userInput = document.getElementById("userInput").value;
-            const style = document.getElementById("styleSelect").value;
+            const styleSelect = document.getElementById("styleSelect");
+            const style = styleSelect.value;
 
             if (!userInput) {
                 alert("Please enter a description to generate images.");
+                return;
+            }
+
+            if (style === "custom" && !document.getElementById("customStyleInput").value) {
+                alert("Please enter a custom style.");
                 return;
             }
 
