@@ -307,7 +307,7 @@
         }
 
         function getRandomSeed() {
-            return Math.floor(Math.random() * 9999) + 1;
+            return Math.floor(Math.random() * 99) + 1;
         }
 
         async function generateImage(index, userInput, style, retryCount = 0) {
@@ -322,9 +322,9 @@
 
             if (style === "custom") {
                 const customStyle = document.getElementById("customStyleInput").value;
-                combinedInput = `"prompt": ${userInput} (style: ${customStyle}, "seed": ${randomSeed})`;
+                combinedInput = `${userInput} (in style: ${customStyle} ${randomSeed})`;
             } else {
-                combinedInput = `"prompt": ${userInput} (style: ${style}), "seed": ${randomSeed}`;
+                combinedInput = `${userInput} (in style: ${style} ${randomSeed})`;
             }
 
             const payload = { "inputs": combinedInput };
